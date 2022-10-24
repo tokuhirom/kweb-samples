@@ -1,0 +1,16 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
+    id 'application'
+}
+
+mainClassName = "kweb.template.ServerKt"
+
+repositories {
+    jcenter()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.kwebio:core:0.10.11'
+    implementation "ch.qos.logback:logback-classic:1.2.3"
+}
