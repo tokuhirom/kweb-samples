@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.7.20"
     id("application")
+    id("idea")
 }
 
 repositories {
@@ -11,3 +12,4 @@ dependencies {
     implementation("io.kweb:kweb-core:1.0.1")
     implementation("ch.qos.logback:logback-classic:1.4.4")
 }
+

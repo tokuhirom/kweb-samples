@@ -1,14 +1,12 @@
 package kweb.template
 
 import kotlinx.serialization.json.jsonPrimitive
-import kweb.ButtonType
-import kweb.InputType
-import kweb.Kweb
-import kweb.button
-import kweb.form
-import kweb.input
-import kweb.new
+import kweb.*
 import kweb.plugins.fomanticUI.FomanticUIPlugin
+import kweb.state.ObservableList
+import kweb.state.renderEach
+
+val list = ObservableList<String>()
 
 fun main() {
     Kweb(port = 16097, debug = true, plugins = listOf(FomanticUIPlugin())) {
@@ -20,7 +18,13 @@ fun main() {
                 val button = button(type = ButtonType.submit)
                 button.text("Tweet")
                 button.on(retrieveJs = input.valueJsExpression, preventDefault = true).click {event ->
-                    println("I want to store the entry here... `${event.retrieved.jsonPrimitive.content}`")
+                    list.add(0, event.retrieved.jsonPrimitive.content)
+                }
+            }
+
+            ul {
+                renderEach(list) {msg ->
+                    li().text(msg)
                 }
             }
         }
