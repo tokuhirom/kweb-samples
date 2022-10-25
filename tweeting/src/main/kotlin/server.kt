@@ -1,5 +1,6 @@
 package kweb.template
 
+import kotlinx.serialization.json.jsonPrimitive
 import kweb.ButtonType
 import kweb.InputType
 import kweb.Kweb
@@ -18,8 +19,8 @@ fun main() {
 
                 val button = button(type = ButtonType.submit)
                 button.text("Tweet")
-                button.on.click {
-                    println("I want to store the entry here... `${input.value.value}`")
+                button.on(retrieveJs = input.valueJsExpression, preventDefault = true).click {event ->
+                    println("I want to store the entry here... `${event.retrieved.jsonPrimitive.content}`")
                 }
             }
         }
