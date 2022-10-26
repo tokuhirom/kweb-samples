@@ -13,3 +13,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.4")
 }
 
+application {
+    mainClass.set("kweb.template.ServerKt")
+}
+
