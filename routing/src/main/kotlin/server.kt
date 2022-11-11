@@ -22,14 +22,17 @@ val list = mutableListOf<String>()
 fun main() {
     Kweb(port = 16097, plugins = listOf(FomanticUIPlugin())) {
         doc.body.new {
-            route {
-                div(fomantic.ui.menu) {
-                    div(fomantic.header.item) {
-                        a(href = "/").text("Routing demo")
-                    }
-                    a(fomantic.item, href = "/create").text("Create new entry")
+            div(fomantic.ui.menu) {
+                div(fomantic.header.item) {
+                    a(href = "/").text("Routing demo")
                 }
+                a(fomantic.item) {
+                    it.text("Create new entry")
+                    it.href = "/create"
+                }
+            }
 
+            route {
                 path("/") {
                     println("Rendering /")
                     url.value = "/entries/1"
