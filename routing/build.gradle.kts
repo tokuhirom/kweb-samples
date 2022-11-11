@@ -11,6 +11,11 @@ repositories {
 dependencies {
     implementation("io.kweb:kweb-core:1.1.3")
     implementation("ch.qos.logback:logback-classic:1.4.4")
+    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 application {

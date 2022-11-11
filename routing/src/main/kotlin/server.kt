@@ -14,10 +14,10 @@ import kweb.plugins.fomanticUI.FomanticUIPlugin
 import kweb.plugins.fomanticUI.fomantic
 import kweb.route
 import kweb.state.KVar
-import kweb.state.ObservableList
-import kweb.state.renderEach
+import kotlin.math.max
+import kotlin.math.min
 
-val list = ObservableList<String>()
+val list = mutableListOf<String>()
 
 fun main() {
     Kweb(port = 16097, plugins = listOf(FomanticUIPlugin())) {
@@ -31,10 +31,17 @@ fun main() {
                 }
 
                 path("/") {
-                    println("Rendering root page")
-                    h1().text("root page")
-                    renderEach(list) {
-                        p().text(it)
+                    println("Rendering /")
+                    url.value = "/entries/1"
+                }
+
+                path("/entries/{page}") { params ->
+                    println("Rendering /entries/{page}")
+                    val page = params["page"]!!.value.toInt()
+                    println("page=$page")
+                    val items = list.paginate(page = page, limit = 5)
+                    items.forEach { item ->
+                        p().text(item)
                     }
                 }
 
@@ -53,4 +60,18 @@ fun main() {
             }
         }
     }
+}
+
+fun <E> List<E>.paginate(page: Int, limit: Int): List<E> {
+    // from(inclusive)
+    val from = if (this.isEmpty()) {
+        0
+    } else {
+        min(limit * (page - 1), this.size)
+    }
+
+    // to(exclusive)
+    val to = max(min(limit * page, this.size), 0)
+
+    return this.subList(from, to)
 }
