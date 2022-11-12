@@ -14,19 +14,24 @@ import kweb.plugins.fomanticUI.FomanticUIPlugin
 import kweb.plugins.fomanticUI.fomantic
 import kweb.route
 import kweb.state.KVar
+import kweb.util.json
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.max
 import kotlin.math.min
 
 val list = mutableListOf<String>()
 
-fun main() {
-    Kweb(port = 16097, plugins = listOf(FomanticUIPlugin())) {
+class RoutingApp(port: Int = 16097) {
+    val pageCounter = AtomicInteger(0)
+
+    val server = Kweb(port = port, plugins = listOf(FomanticUIPlugin())) {
         doc.body.new {
             div(fomantic.ui.menu) {
                 div(fomantic.header.item) {
                     a(href = "/").text("Routing demo")
                 }
                 a(fomantic.item) {
+                    it.classes("createLink")
                     it.text("Create new entry")
                     it.href = "/create"
                 }
@@ -41,6 +46,7 @@ fun main() {
                 path("/entries/{page}") { params ->
                     println("Rendering /entries/{page}")
                     val page = params["page"]!!.value.toInt()
+                    pageCounter.incrementAndGet()
                     println("page=$page")
                     val items = list.paginate(page = page, limit = 5)
                     items.forEach { item ->
@@ -63,6 +69,11 @@ fun main() {
             }
         }
     }
+
+}
+
+fun main() {
+    RoutingApp(7660)
 }
 
 fun <E> List<E>.paginate(page: Int, limit: Int): List<E> {
