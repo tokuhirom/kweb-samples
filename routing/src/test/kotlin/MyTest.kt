@@ -54,15 +54,5 @@ class InputCheckedTest(@Arguments("--headless") val driver: ChromeDriver) {
 
         wait.until { routingApp.pageCounter.get() == 2 }
         routingApp.pageCounter.get() shouldBe 2
-
-        //        routingApp.checkKVar.value shouldBe false
-//        input.click()
-//        await().untilAsserted { routingApp.checkKVar.value shouldBe true }
-//        input.click()
-//        await().untilAsserted { routingApp.checkKVar.value shouldBe false }
-//
-//        await().untilAsserted { input.getAttribute("checked") shouldBe null }
-//        routingApp.checkKVar.value = true
-//        await().untilAsserted { input.getAttribute("checked") shouldBe "true" }
     }
 }
