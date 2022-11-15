@@ -1,47 +1,33 @@
 package kweb.template
 
-import kotlinx.serialization.json.jsonPrimitive
-import kweb.*
-import kweb.plugins.fomanticUI.FomanticUIPlugin
+import kweb.ButtonType
+import kweb.InputType
+import kweb.Kweb
+import kweb.button
+import kweb.form
+import kweb.input
+import kweb.li
+import kweb.new
+import kweb.state.KVar
 import kweb.state.ObservableList
 import kweb.state.renderEach
+import kweb.ul
 
 val list = ObservableList<String>()
 
 fun main() {
-    list.addListener { changes ->
-        changes.forEach { modification ->
-            when (modification) {
-                is ObservableList.Modification.Insertion -> {
-                    println("Insertion item=${modification.item}")
-                }
-
-                is ObservableList.Modification.Change -> {
-                    println("Change position=${modification.position} newItem=${modification.newItem}")
-                }
-
-                is ObservableList.Modification.Move -> {
-                    println("Move oldPosition=${modification.oldPosition} newPosition=${modification.newPosition}")
-                }
-
-                is ObservableList.Modification.Deletion -> {
-                    println("Deletion position=${modification.position}")
-                }
-            }
-        }
-    }
-
-    Kweb(port = 16097, debug = true, plugins = listOf(FomanticUIPlugin())) {
+    Kweb(port = 16097) {
         doc.body.new {
-            form {
-                val input = input(type = InputType.text)
-                input.setValue("haha")
+            lateinit var input: KVar<String>
 
-                val button = button(type = ButtonType.submit)
-                button.text("Tweet")
-                button.on(retrieveJs = input.valueJsExpression, preventDefault = true).click { event ->
-                    list.add(0, event.retrieved.jsonPrimitive.content)
-                }
+            form {
+                input = input(type = InputType.text)
+                    .value
+
+                button(type = ButtonType.submit)
+                    .text("Tweet")
+            }.on(preventDefault = true).submit {
+                list.add(0, input.value)
             }
 
             ul {
