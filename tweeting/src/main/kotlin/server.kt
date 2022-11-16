@@ -1,6 +1,7 @@
 package kweb.template
 
 import kweb.ButtonType
+import kweb.InputElement
 import kweb.InputType
 import kweb.Kweb
 import kweb.button
@@ -18,16 +19,18 @@ val list = ObservableList<String>()
 fun main() {
     Kweb(port = 16097) {
         doc.body.new {
+            lateinit var inputElement: InputElement
             lateinit var input: KVar<String>
 
             form {
-                input = input(type = InputType.text)
-                    .value
+                inputElement = input(type = InputType.text)
+                input = inputElement.value
 
                 button(type = ButtonType.submit)
                     .text("Tweet")
             }.on(preventDefault = true).submit {
                 list.add(0, input.value)
+                inputElement.setValue("")
             }
 
             ul {
